@@ -40,7 +40,7 @@ def get_gym_icon(team, level, raidlevel, pkm):
 
     if not os.path.isfile(out_filename):
         gym_image = "static/images/gym/{}.png".format(team)
-        cmd = "convert {} {} -gravity center -font ArialBk -pointsize 25 {} {}".format(gym_image, join(subject_lines),
+        cmd = 'convert {} {} -gravity center -font "static/Arial Black.ttf" -pointsize 25 {} {}'.format(gym_image, join(subject_lines),
                                                                                        join(badge_lines), out_filename)
         subprocess.call(cmd, shell=True)
     return out_filename
