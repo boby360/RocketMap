@@ -44,6 +44,8 @@ def get_gym_icon(team, level, raidlevel, pkm):
         cmd = 'convert {} {} -gravity center -font "{}" -pointsize 25 {} {}'.format(gym_image, join(subject_lines),
                                                                                     font, join(badge_lines),
                                                                                     out_filename)
+        if os.name != 'nt':
+            cmd = cmd.replace(" ( ", " \( ").replace(" ) ", " \) ")
         subprocess.call(cmd, shell=True)
     return out_filename
 
@@ -52,7 +54,7 @@ def draw_subject(image, scale):
     scaled_size = int(target_size * scale)
     lines = []
     lines.append(
-        "-gravity north \( {} -resize {}x{} \( +clone -background black -shadow 80x3+5+5 \) +swap -background none -layers merge +repage \) -geometry +0+0 -composite".format(
+        "-gravity north ( {} -resize {}x{} ( +clone -background black -shadow 80x3+5+5 ) +swap -background none -layers merge +repage ) -geometry +0+0 -composite".format(
             image, scaled_size, scaled_size))
     return lines
 
