@@ -6,7 +6,7 @@ from string import join
 
 log = logging.getLogger(__name__)
 
-out_dir = "static/images/generated"
+out_dir = os.path.join('static', 'images', 'generated')
 target_size = 96    # Width/height of target gym icon in pixels
 
 
@@ -19,29 +19,31 @@ def get_gym_icon(team, level, raidlevel, pkm):
     white_transparent = "\"rgba(255, 255, 255, 0.7)\""
     black_transparent = "\"rgba(0, 0, 0, 0.7)\""
     if pkm:
-        out_filename = "{}/{}_{}_{}.png".format(out_dir, team, level, pkm)
-        subject_lines = draw_subject("static/icons/{}.png".format(pkm), float(2) / 3)
+        out_filename = os.path.join(out_dir, "{}_{}_{}.png".format(team, level, pkm))
+        subject_lines = draw_subject(os.path.join('static', 'icons', '{}.png'.format(pkm)), float(2) / 3)
         badge_lines.extend(draw_badge(75, 20, 15, white_transparent, "black", raidlevel))
         if level > 0:
             badge_lines.extend(draw_badge(75, 76, 15, black_transparent, "white", level))
     elif raidlevel:
         raidlevel = int(raidlevel)
         egg_name = "legendary" if raidlevel == 5 else ("rare" if raidlevel > 2 else "normal")
-        out_filename = "{}/{}_{}_{}.png".format(out_dir, team, level, egg_name)
-        subject_lines = draw_subject("static/images/raid/egg_{}.png".format(egg_name), 0.5)
+        out_filename = os.path.join(out_dir, "{}_{}_{}.png".format(team, level, egg_name))
+        subject_lines = draw_subject(os.path.join('static', 'images', 'raid', 'egg_{}.png'.format(egg_name)), 0.5)
         badge_lines.extend(draw_badge(75, 20, 15, white_transparent, "black", raidlevel))
         if level > 0:
             badge_lines.extend(draw_badge(75, 76, 15, black_transparent, "white", level))
     elif level > 0:
-        out_filename = "{}/{}_{}.png".format(out_dir, team, level)
+        out_filename = os.path.join(out_dir, '{}_{}.png'.format(team, level))
         badge_lines.extend(draw_badge(75, 76, 15, black_transparent, "white", level))
     else:
-        return "static/images/gym/{}.png".format(team)
+        return os.path.join('static', 'images', 'gym', '{}.png'.format(team))
 
     if not os.path.isfile(out_filename):
-        gym_image = "static/images/gym/{}.png".format(team)
-        cmd = 'convert {} {} -gravity center -font "static/Arial Black.ttf" -pointsize 25 {} {}'.format(gym_image, join(subject_lines),
-                                                                                       join(badge_lines), out_filename)
+        gym_image = os.path.join('static', 'images', 'gym', '{}.png'.format(team))
+        font = os.path.join('static', 'Arial Black.ttf')
+        cmd = 'convert {} {} -gravity center -font "{}" -pointsize 25 {} {}'.format(gym_image, join(subject_lines),
+                                                                                    font, join(badge_lines),
+                                                                                    out_filename)
         subprocess.call(cmd, shell=True)
     return out_filename
 
