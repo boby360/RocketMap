@@ -19,21 +19,21 @@ def get_gym_icon(team, level, raidlevel, pkm):
     white_transparent = "\"rgba(255, 255, 255, 0.7)\""
     black_transparent = "\"rgba(0, 0, 0, 0.7)\""
     if pkm:
-        out_filename = os.path.join(out_dir, "{}_{}_{}.png".format(team, level, pkm))
+        out_filename = os.path.join(out_dir, "{}_L{}_R{}_P{}.png".format(team, level, raidlevel, pkm))
         subject_lines = draw_subject(os.path.join('static', 'icons', '{}.png'.format(pkm)), float(2) / 3)
         badge_lines.extend(draw_badge(75, 20, 15, white_transparent, "black", raidlevel))
         if level > 0:
             badge_lines.extend(draw_badge(75, 76, 15, black_transparent, "white", level))
     elif raidlevel:
         raidlevel = int(raidlevel)
+        out_filename = os.path.join(out_dir, "{}_L{}_R{}.png".format(team, level, raidlevel))
         egg_name = "legendary" if raidlevel == 5 else ("rare" if raidlevel > 2 else "normal")
-        out_filename = os.path.join(out_dir, "{}_{}_{}.png".format(team, level, egg_name))
         subject_lines = draw_subject(os.path.join('static', 'images', 'raid', 'egg_{}.png'.format(egg_name)), 0.5)
         badge_lines.extend(draw_badge(75, 20, 15, white_transparent, "black", raidlevel))
         if level > 0:
             badge_lines.extend(draw_badge(75, 76, 15, black_transparent, "white", level))
     elif level > 0:
-        out_filename = os.path.join(out_dir, '{}_{}.png'.format(team, level))
+        out_filename = os.path.join(out_dir, '{}_L{}.png'.format(team, level))
         badge_lines.extend(draw_badge(75, 76, 15, black_transparent, "white", level))
     else:
         return os.path.join('static', 'images', 'gym', '{}.png'.format(team))
